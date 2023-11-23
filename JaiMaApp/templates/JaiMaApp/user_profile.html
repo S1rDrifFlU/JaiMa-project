@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>User Profile</h1>
+  {% if user.is_authenticated %}
+    <p>Welcome, {{ username }}!</p>
+    <h2>Your Blog Posts</h2>
+    {% if blog_posts %}
+      <ul>
+        {% for post in blog_posts %}
+          <li>
+            {{ post.title }}
+            
+            <!-- Display edit and delete options for the user's own posts -->
+            <a href="{% url 'post_update' post.id %}">Edit</a>
+            <a href="{% url 'post_delete' post.id %}">Delete</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>You haven't written any blog posts yet.</p>
+    {% endif %}
+    <!-- Add other user profile information here -->
+  {% else %}
+    <p>Please log in to view your profile.</p>
+  {% endif %}
+{% endblock %}
