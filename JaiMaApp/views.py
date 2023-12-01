@@ -81,7 +81,7 @@ def search_posts(request):
 def search_posts_live(request):
     query = request.GET.get('q', '')
     posts = BlogPost.objects.filter(title__icontains=query)
-    data = {'result': 'success', 'posts': [{'title': post.title} for post in posts]}
+    data = {'result': 'success', 'posts': [{'id': post.id, 'title': post.title} for post in posts]}
     return JsonResponse(data)
 
 def post_detail(request, pk):
@@ -96,14 +96,18 @@ def post_detail(request, pk):
 @login_required
 def post_create(request):
     if request.method == 'POST':
-        form = BlogPostForm(request.POST)
+        form = BlogPostForm(request.POST, request.FILES)
         if form.is_valid():
-            form.instance.author = request.user
-            form.save()
-            return redirect('home')
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('post_detail', pk=post.pk)
     else:
         form = BlogPostForm()
+
     return render(request, 'JaiMaApp/post_form.html', {'form': form})
+
+
 
 @login_required
 def post_edit(request, pk):
@@ -112,7 +116,7 @@ def post_edit(request, pk):
         return redirect('home')
 
     if request.method == 'POST':
-        form = BlogPostForm(request.POST, instance=post)
+        form = BlogPostForm(request.POST,request.FILES, instance=post)
         if form.is_valid():
             form.save()
             return redirect('home')

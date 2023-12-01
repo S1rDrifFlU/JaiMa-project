@@ -2,6 +2,11 @@
 
 {% block content %}
   <h1>All Blog Posts</h1>
+
+  <input type="text" id="search-input" placeholder="Type to search">
+  
+  <!-- Search results -->
+  <ul id="search-results"></ul>
   {% for post in posts %}
     <div>
       <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
@@ -9,6 +14,9 @@
       <p>Author: {{ post.author.username }}</p>
       <p>Created at: {{ post.created_at }}</p>
       <p>Updated at: {{ post.updated_at }}</p>
+      {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}">
+      {% endif %}
       
       <!-- Display Likes and Comments Counts -->
       <p>Likes: {{ post.likes }}</p>
@@ -30,4 +38,35 @@
   {% endfor %}
   
   <a href="{% url 'post_create' %}">Create New Post</a>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      var inputField = $('#search-input');
+      var resultsList = $('#search-results');
+  
+      inputField.on('input', function () {
+        var query = inputField.val().trim();
+        if (query.length > 0) {
+          $.get("{% url 'search_posts_live' %}", { q: query }, function (data) {
+            resultsList.empty();
+            if (data.result === 'success') {
+              if (data.posts.length > 0) {
+                for (var i = 0; i < data.posts.length; i++) {
+                  console.log('data.posts:', data.posts);
+                  resultsList.append('<li><a href="/post/' + data.posts[i].id + '/">' + data.posts[i].title + '</a></li>');
+                }
+              } else {
+                resultsList.append('<li>No results found.</li>');
+              }
+            } else {
+              resultsList.append('<li>Error processing the request.</li>');
+            }
+          });
+        } else {
+          resultsList.empty();
+        }
+      });
+    });
+  </script>
 {% endblock %}
