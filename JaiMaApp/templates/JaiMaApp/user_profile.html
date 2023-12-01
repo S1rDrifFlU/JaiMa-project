@@ -9,11 +9,28 @@
       <ul>
         {% for post in blog_posts %}
           <li>
-            {{ post.title }}
+            <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+
+            <!-- Display likes and comments counts -->
+            <p>Likes: {{ post.like_set.count }}</p>
+            <p>Comments: {{ post.comment_set.count }}</p>
             
             <!-- Display edit and delete options for the user's own posts -->
             <a href="{% url 'post_update' post.id %}">Edit</a>
             <a href="{% url 'post_delete' post.id %}">Delete</a>
+
+            <!-- Add a link to view comments for the post -->
+            <form method="post" action="{% url 'set_like' post.pk %}">
+              {% csrf_token %}
+              <button type="submit">
+                {% if post.is_liked %}
+                  Unlike
+                {% else %}
+                  Like
+                {% endif %}
+              </button>
+            </form>
+            <a href="{% url 'post_comments' post.pk %}">View Comments</a>
           </li>
         {% endfor %}
       </ul>

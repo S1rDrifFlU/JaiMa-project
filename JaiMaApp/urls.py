@@ -1,6 +1,6 @@
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
-from .views import home, profile,signin,signup,signout,user_profile,search_posts,search_posts_live,post_create,post_delete,post_detail,post_edit
+from .views import add_comment, home, post_comments, profile, set_like,signin,signup,signout,user_profile,search_posts,search_posts_live,post_create,post_delete,post_detail,post_edit
 
 urlpatterns = [
     path('', home, name='home'),
@@ -15,7 +15,9 @@ urlpatterns = [
     path('post/new/', post_create, name='post_create'),
     path('post/<int:pk>/edit/', post_edit, name='post_update'),
     path('post/<int:pk>/delete/', post_delete, name='post_delete'),
-    path('signout/', auth_views.LogoutView.as_view(next_page='home'), name='signout'),
-    path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='auth')),
+    path('signout', signout,name="signout"),
+    path('set_like/<int:post_id>/', set_like, name='set_like'),
+    path('post/<int:pk>/comments/', post_comments, name='post_comments'),
+    path('post/<int:post_id>/add_comment/', add_comment, name='add_comment'),
     # Add other URLs as needed
 ]

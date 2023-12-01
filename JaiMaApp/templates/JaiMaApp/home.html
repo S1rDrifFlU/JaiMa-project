@@ -9,6 +9,23 @@
       <p>Author: {{ post.author.username }}</p>
       <p>Created at: {{ post.created_at }}</p>
       <p>Updated at: {{ post.updated_at }}</p>
+      
+      <!-- Display Likes and Comments Counts -->
+      <p>Likes: {{ post.likes }}</p>
+      <p>Comments: {{ post.comments }}</p>
+
+      <!-- Add a link to view comments for the post -->
+      <form method="post" action="{% url 'set_like' post.pk %}">
+        {% csrf_token %}
+        <button type="submit">
+          {% if post.is_liked %}
+            Unlike
+          {% else %}
+            Like
+          {% endif %}
+        </button>
+      </form>
+      <a href="{% url 'post_comments' post.pk %}">View Comments</a>
     </div>
   {% endfor %}
   

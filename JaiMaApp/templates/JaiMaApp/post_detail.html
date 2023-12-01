@@ -7,6 +7,25 @@
   <p>Created at: {{ post.created_at }}</p>
   <p>Updated at: {{ post.updated_at }}</p>
 
+  <p>Likes: {{ likes.count }}</p>
+
+  <!-- Display Comments Count -->
+  <p>Comments: {{ comments.count }}</p>
+
+  <h2>Likes:</h2>
+  {% for like in likes %}
+    <p>{{ like.user.username }} liked this post on {{ like.created_at }}</p>
+  {% empty %}
+    <p>No likes yet.</p>
+  {% endfor %}
+
+  <h2>Comments:</h2>
+  {% for comment in comments %}
+    <p>{{ comment.user.username }} commented on {{ comment.created_at }}: {{ comment.content }}</p>
+  {% empty %}
+    <p>No comments yet.</p>
+  {% endfor %}
+
   <a href="{% url 'post_update' post.pk %}">Edit Post</a>
   <a href="{% url 'post_delete' post.pk %}">Delete Post</a>
   <a href="{% url 'home' %}">Back to Home</a>

@@ -10,7 +10,10 @@
             <li><a href="{% url 'home' %}">Home</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'user_profile' %}">Profile</a></li>
-                <li><a href="{% url 'signout' %}">Logout</a></li>
+                <form action="{% url 'signout' %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Logout</button>
+                </form>
             {% else %}
                 <li><a href="{% url 'signup' %}">Sign Up</a></li>
                 <li><a href="{% url 'signin' %}">Sign In</a></li>
