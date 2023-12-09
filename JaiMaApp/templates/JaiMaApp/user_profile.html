@@ -1,44 +1,58 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>User Profile</h1>
-  {% if user.is_authenticated %}
-    <p>Welcome, {{ username }}!</p>
-    <h2>Your Blog Posts</h2>
-    {% if blog_posts %}
-      <ul>
-        {% for post in blog_posts %}
-          <li>
-            <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+  <div class="container mt-5">
+    <h1>User Profile</h1>
+    {% if user.is_authenticated %}
+      <p>Welcome, {{ username }}!</p>
+      <h2>Your Blog Posts</h2>
+      {% if blog_posts %}
+        <ul class="list-group">
+          {% for post in blog_posts %}
+            <li class="list-group-item blog-post-item">
+              <h2><a href="{% url 'post_detail' post.pk %}" class="text-decoration-none text-dark">{{ post.title }}</a></h2>
 
-            <!-- Display likes and comments counts -->
-            <p>Likes: {{ post.like_set.count }}</p>
-            <p>Comments: {{ post.comment_set.count }}</p>
-            
-            <!-- Display edit and delete options for the user's own posts -->
-            <a href="{% url 'post_update' post.id %}">Edit</a>
-            <a href="{% url 'post_delete' post.id %}">Delete</a>
+              <!-- Display likes and comments counts -->
+              <p>Likes: {{ post.like_set.count }}</p>
+              <p>Comments: {{ post.comment_set.count }}</p>
 
-            <!-- Add a link to view comments for the post -->
-            <form method="post" action="{% url 'set_like' post.pk %}">
-              {% csrf_token %}
-              <button type="submit">
-                {% if post.is_liked %}
-                  Unlike
-                {% else %}
-                  Like
-                {% endif %}
-              </button>
-            </form>
-            <a href="{% url 'post_comments' post.pk %}">View Comments</a>
-          </li>
-        {% endfor %}
-      </ul>
+              <!-- Display edit and delete options for the user's own posts -->
+              <div class="btn-group" role="group">
+                <a href="{% url 'post_update' post.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'post_delete' post.id %}" class="btn btn-danger">Delete</a>
+                <form method="post" action="{% url 'set_like' post.pk %}" class="ml-2">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary">
+                    {% if post.is_liked %}
+                      Unlike
+                    {% else %}
+                      Like
+                    {% endif %}
+                  </button>
+                </form>
+                <a href="{% url 'post_comments' post.pk %}" class="btn btn-secondary ml-2">View Comments</a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>You haven't written any blog posts yet.</p>
+      {% endif %}
+      <!-- Add other user profile information here -->
     {% else %}
-      <p>You haven't written any blog posts yet.</p>
+      <p>Please log in to view your profile.</p>
     {% endif %}
-    <!-- Add other user profile information here -->
-  {% else %}
-    <p>Please log in to view your profile.</p>
-  {% endif %}
+  </div>
+
+  <style>
+    .blog-post-item {
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .blog-post-item:hover {
+      transform: scale(1.02);
+    }
+
+    
+  </style>
 {% endblock %}

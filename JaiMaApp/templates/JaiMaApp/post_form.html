@@ -1,11 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Blog Post</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-  </form>
-  <a href="{% url 'home' %}">Back to Home</a>
+  <style>
+    .form-group:hover {
+      transform: translateY(-5px);
+      transition: transform 0.3s ease;
+    }
+
+    .btn:hover {
+      filter: brightness(90%);
+    }
+  </style>
+
+  <div class="container mt-5">
+    <h1 class="mb-4">{% if form.instance.pk %}Edit{% else %}Create{% endif %} Blog Post</h1>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="mb-3 form-group">
+        <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+        <input type="text" class="form-control" id="{{ form.title.id_for_label }}" name="{{ form.title.name }}" value="{{ form.title.value }}">
+      </div>
+      <div class="mb-3 form-group">
+        <label for="{{ form.content.id_for_label }}" class="form-label">Content</label>
+        <textarea class="form-control" id="{{ form.content.id_for_label }}" name="{{ form.content.name }}" rows="8">{{ form.content.value }}</textarea>
+      </div>
+      <div class="mb-3 form-group">
+        <label for="{{ form.image.id_for_label }}" class="form-label">Image</label>
+        {{ form.image }}
+      </div>
+      <div class="mb-3 form-group">
+        <label for="{{ form.url.id_for_label }}" class="form-label">URL</label>
+        {{ form.url }}
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
+  </div>
 {% endblock %}

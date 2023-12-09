@@ -1,28 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Comments for "{{ post.title }}"</h1>
-  <p>{{ post.content }}</p>
-  <p>Author: {{ post.author.username }}</p>
-  <p>Created at: {{ post.created_at }}</p>
-  <p>Updated at: {{ post.updated_at }}</p>
+  <style>
+    .card:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
 
-  <!-- Display Comments -->
-  {% if comments %}
-    <h2>Comments:</h2>
-    {% for comment in comments %}
-      <div>
-        <p>{{ comment.user.username }} commented on {{ comment.created_at }}:</p>
-        <p>{{ comment.content }}</p>
+    .comment-card:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease;
+    }
+  </style>
+
+  <div class="container mt-5">
+    <h1 class="mb-4">Comments for "{{ post.title }}"</h1>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title">{{ post.title }}</h2>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text"><small class="text-muted">Author: {{ post.author.username }}</small></p>
+        <p class="card-text"><small class="text-muted">Created at: {{ post.created_at }}</small></p>
+        <p class="card-text"><small class="text-muted">Updated at: {{ post.updated_at }}</small></p>
       </div>
-    {% endfor %}
-  {% else %}
-    <p>No comments yet.</p>
-  {% endif %}
+    </div>
 
-  <!-- Add a link to add a new comment for the post -->
-  <a href="{% url 'add_comment' post.pk %}">Add a Comment</a>
+    <!-- Display Comments -->
+    {% if comments %}
+      <h2 class="mb-3">Comments:</h2>
+      {% for comment in comments %}
+        <div class="card mb-3 comment-card">
+          <div class="card-body">
+            <h5 class="card-title">{{ comment.user.username }} commented on {{ comment.created_at }}:</h5>
+            <p class="card-text">{{ comment.content }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No comments yet.</p>
+    {% endif %}
 
-  <br>
-  <a href="{% url 'home' %}">Back to All Blog Posts</a>
+    <!-- Add a link to add a new comment for the post -->
+    <a href="{% url 'add_comment' post.pk %}" class="btn btn-primary mb-3">Add a Comment</a>
+
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to All Blog Posts</a>
+  </div>
 {% endblock %}

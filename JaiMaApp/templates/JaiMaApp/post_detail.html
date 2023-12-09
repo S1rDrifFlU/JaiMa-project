@@ -1,32 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>{{ post.title }}</h1>
-  <p>{{ post.content }}</p>
-  <p>Author: {{ post.author.username }}</p>
-  <p>Created at: {{ post.created_at }}</p>
-  <p>Updated at: {{ post.updated_at }}</p>
+  <style>
+    .card:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+    }
 
-  <p>Likes: {{ likes.count }}</p>
+    .like-comment:hover {
+      background-color: #f8f9fa;
+      transition: background-color 0.3s ease;
+    }
 
-  <!-- Display Comments Count -->
-  <p>Comments: {{ comments.count }}</p>
+    .btn:hover {
+      filter: brightness(90%);
+    }
+  </style>
 
-  <h2>Likes:</h2>
-  {% for like in likes %}
-    <p>{{ like.user.username }} liked this post on {{ like.created_at }}</p>
-  {% empty %}
-    <p>No likes yet.</p>
-  {% endfor %}
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">{{ post.title }}</h1>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text"><small class="text-muted">Author: {{ post.author.username }}</small></p>
+        <p class="card-text"><small class="text-muted">Created at: {{ post.created_at }}</small></p>
+        <p class="card-text"><small class="text-muted">Updated at: {{ post.updated_at }}</small></p>
 
-  <h2>Comments:</h2>
-  {% for comment in comments %}
-    <p>{{ comment.user.username }} commented on {{ comment.created_at }}: {{ comment.content }}</p>
-  {% empty %}
-    <p>No comments yet.</p>
-  {% endfor %}
+        <p class="card-text mt-3 like-comment">Likes: {{ likes.count }}</p>
 
-  <a href="{% url 'post_update' post.pk %}">Edit Post</a>
-  <a href="{% url 'post_delete' post.pk %}">Delete Post</a>
-  <a href="{% url 'home' %}">Back to Home</a>
+        <!-- Display Comments Count -->
+        <p class="card-text like-comment">Comments: {{ comments.count }}</p>
+
+        <h2 class="mt-4 like-comment">Likes:</h2>
+        {% for like in likes %}
+          <p class="like-comment"><strong>{{ like.user.username }}</strong> liked this post on {{ like.created_at }}</p>
+        {% empty %}
+          <p class="like-comment">No likes yet.</p>
+        {% endfor %}
+
+        <h2 class="mt-4 like-comment">Comments:</h2>
+        {% for comment in comments %}
+          <p class="like-comment"><strong>{{ comment.user.username }}</strong> commented on {{ comment.created_at }}: {{ comment.content }}</p>
+        {% empty %}
+          <p class="like-comment">No comments yet.</p>
+        {% endfor %}
+
+        <div class="mt-4">
+          <a href="{% url 'post_update' post.pk %}" class="btn btn-primary">Edit Post</a>
+          <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Delete Post</a>
+          <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

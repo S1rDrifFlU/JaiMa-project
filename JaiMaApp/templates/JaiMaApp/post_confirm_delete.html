@@ -1,11 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Confirm Deletion</h1>
-  <p>Are you sure you want to delete "{{ object }}"?</p>
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirm</button>
-  </form>
-  <a href="{% url 'home' %}">Back to Home</a>
+  <style>
+    .card {
+      transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
+  </style>
+
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Confirm Deletion</h1>
+        <p class="card-text">Are you sure you want to delete "{{ object }}"?</p>
+        
+        <form method="post" class="mb-3">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Confirm</button>
+        </form>
+
+        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+      </div>
+    </div>
+  </div>
 {% endblock %}
