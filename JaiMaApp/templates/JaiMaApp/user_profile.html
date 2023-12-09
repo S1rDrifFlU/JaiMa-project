@@ -18,9 +18,9 @@
 
               <!-- Display edit and delete options for the user's own posts -->
               <div class="btn-group" role="group">
-                <a href="{% url 'post_update' post.id %}" class="btn btn-primary">Edit</a>
-                <a href="{% url 'post_delete' post.id %}" class="btn btn-danger">Delete</a>
-                <form method="post" action="{% url 'set_like' post.pk %}" class="ml-2">
+                <a href="{% url 'post_update' post.id %}" class="btn btn-primary ms-2">Edit</a>
+                <a href="{% url 'post_delete' post.id %}" class="btn btn-danger ms-2">Delete</a>
+                <form method="post" action="{% url 'set_like' post.pk %}" class="ml-2 ms-2">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-primary">
                     {% if post.is_liked %}
@@ -30,7 +30,7 @@
                     {% endif %}
                   </button>
                 </form>
-                <a href="{% url 'post_comments' post.pk %}" class="btn btn-secondary ml-2">View Comments</a>
+                <a href="{% url 'post_comments' post.pk %}" class="btn btn-secondary ml-2 ms-2">View Comments</a>
               </div>
             </li>
           {% endfor %}

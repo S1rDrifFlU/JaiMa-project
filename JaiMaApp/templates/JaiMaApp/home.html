@@ -96,7 +96,7 @@
                 {% if post.image %}
                 <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid mb-3">
                 {% endif %}
-
+                <p>Likes: {{ post.like_set.count }}</p>
                 <form method="post" action="{% url 'set_like' post.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary">
@@ -126,7 +126,7 @@
         </div>
         {% endfor %}
 
-        <a href="{% url 'post_create' %}" class="btn btn-success">Create New Post</a>
+        <a href="{% url 'post_create' %}" class="btn btn-success btn-sm position-fixed bottom-0 end-0 m-2 w-25">Create New Post</a>
     </div>
     {% endblock %}
 </body>
